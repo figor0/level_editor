@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>LevelArea.qml</file>
+        <file>TypesArea.qml</file>
+        <file>DetailArea.qml</file>
+        <file>Header.qml</file>
+        <file>LoaderSaver.qml</file>
+    </qresource>
+</RCC>

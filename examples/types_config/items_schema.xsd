@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<player>
+		<unique>true</unique>
+		<image_path>player.jpg</image_path>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name = "player"/>
+		</xs:schema>
+	</player>
+	<wall>
+		<unique>false</unique>
+		<image_path>wall.jpg</image_path>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name = "wall">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name = "destructible" type = "xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wall>
+	<stairs>
+		<unique>false</unique>
+		<image_path>stairs.jpeg</image_path>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name = "stairs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name = "speed">
+							<xs:simpleType>
+								<xs:restriction base="xs:float">
+									<xs:minInclusive value="1"/>
+									<xs:maxInclusive value="3"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</stairs>
+	<enemy_type>
+		<unique>false</unique>
+		<image_path>enemy.png</image_path>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name = "enemy_type">
+				<xs:complexType>
+      				<xs:sequence>
+        				<xs:element name="hp" type="xs:decimal"/>
+        				<xs:element name="damage" type="xs:decimal"/>
+  					</xs:sequence>
+  				</xs:complexType>
+  			</xs:element>
+		</xs:schema>
+	</enemy_type>
+	<bomb_type>
+		<unique>false</unique>
+		<image_path>bomb.jpg</image_path>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name = "bomb_type">
+				<xs:complexType>
+      				<xs:sequence>
+        				<xs:element name="duration_time" type="xs:decimal"/>
+        				<xs:element name="damage" type="xs:decimal"/>
+  					</xs:sequence>
+  				</xs:complexType>
+  			</xs:element>
+		</xs:schema>
+	</bomb_type>
+</root>
+
+

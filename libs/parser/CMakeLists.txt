@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5Core REQUIRED)
-find_package(Qt5XML REQUIRED)
+find_package(Qt5Xml REQUIRED)
 find_package(Qt5XmlPatterns REQUIRED)
 
 set(SOURCES general.cpp items_model.cpp)

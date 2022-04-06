@@ -256,3 +256,91 @@ bool LevelItem::isValid() const
 	return m_item.type_name().isEmpty() == false;
 }
 
+
+//Levels ILevelsIO::parse(const ILevelsIO::TargetType &target) noexcept
+//{
+//    Levels result;
+//    bool valid = setTarget(target);
+//    if ( valid == true ) {
+//        result = parse();
+//    }
+//    return result;
+//}
+
+//bool ILevelsIO::serrialize(const ILevelsIO::TargetType &target, const Levels &levels) noexcept
+//{
+//    bool success = setTarget(target);
+//    if ( success == true ){
+//        success = serrialize(levels);
+//    }
+//    return success;
+//}
+
+//AFileLevelsIO::AFileLevelsIO(const QString &target) noexcept
+//{
+//    setTarget(target);
+//}
+
+//bool AFileLevelsIO::isValid() const noexcept override
+//{
+//    return QFile::exists(m_filePath) &&
+//            isValidFormat();
+//}
+
+//bool AFileLevelsIO::setTarget(const QString &target) noexcept override
+//{
+//    m_filePath = target;
+//    if ( !isValid() ){
+//        m_filePath = QString();
+//        return false;
+//    }
+//    return true;
+//}
+
+//QString AFileLevelsIO::target() const noexcept override
+//{
+//    return m_filePath;
+//}
+
+//Levels AFileLevelsIO::parse() noexcept override
+//{
+//    QFile file(m_filePath);
+//    Levels result;
+//    if ( file.open( QIODevice::ReadOnly ) )
+//    {
+//        result = parseLevels(file.readAll());
+//    }
+//    return result;
+//}
+
+//bool AFileLevelsIO::serrialize(const Levels &levels) noexcept override
+//{
+//    bool result = false;
+//    QFile file(m_filePath);
+//    if ( file.open(QIODevice::WriteOnly)){
+//        auto data = serrializeLevels(levels);
+//        file.write(data);
+//        result = !data.isEmpty();
+//    }
+//    return result;
+//}
+
+bool LevelsFromXml::isValid(const ILevelsIO::DataType &data) noexcept
+{
+    return QDomDocument(data).isNull();
+}
+
+Levels LevelsFromXml::parse(const ILevelsIO::DataType &data) noexcept
+{
+    Levels result;
+    if ( isValid(data) ){
+        QDomDocument root(data);
+        auto root_elem = root.firstChildElement();
+    }
+    return result;
+}
+
+ILevelsIO::DataType LevelsFromXml::serrialize(const Levels &levels) noexcept
+{
+
+}

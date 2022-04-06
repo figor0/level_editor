@@ -71,92 +71,17 @@ using Levels = std::vector<Level>;
 class ILevelsIO
 {
 public:
-    using TargetType = QString;
-    virtual bool isValid() const noexcept = 0;
-    virtual bool setTarget(const TargetType& target) noexcept = 0;
-    virtual QString target() const noexcept = 0;
-    virtual Levels parse() noexcept = 0;
-    virtual Levels parse(const TargetType& target) noexcept
-    {
-        Levels result;
-        bool valid = setTarget(target);
-        if ( valid == true ) {
-            result = parse();
-        }
-        return result;
-    }
-    virtual bool serrialize(const TargetType& target,
-                            const Levels& levels) noexcept
-    {
-        bool success = setTarget(target);
-        if ( success == true ){
-            success = serrialize(levels);
-        }
-        return success;
-    }
-    virtual bool serrialize(const Levels& levels) noexcept = 0;
+    using DataType = QByteArray;
+    virtual bool isValid(const DataType& data) noexcept = 0;
+    virtual Levels parse(const DataType& target) noexcept = 0;
+    virtual DataType serrialize(const Levels& levels) noexcept = 0;
 };
 
-class AFileLevelsIO: public ILevelsIO
-{
-public:
-    AFileLevelsIO(const QString& target = {} ) noexcept
-    {
-        setTarget(target);
-    }
-    bool isValid() const noexcept override
-    {
-        return QFile::exists(m_filePath) &&
-               isValidFormat();
-    }
-    bool setTarget(const QString &target) noexcept override
-    {
-        m_filePath = target;
-        if ( !isValid() ){
-            m_filePath = QString();
-            return false;
-        }
-        return true;
-    }
-    QString target() const noexcept override
-    {
-        return m_filePath;
-    }
-    Levels parse() noexcept override
-    {
-        QFile file(m_filePath);
-        Levels result;
-        if ( file.open( QIODevice::ReadOnly ) )
-        {
-            result = parseLevels(file.readAll());
-        }
-        return result;
-    }
-    bool serrialize(const Levels &levels) noexcept override
-    {
-        bool result = false;
-        QFile file(m_filePath);
-        if ( file.open(QIODevice::WriteOnly)){
-            auto data = serrializeLevels(levels);
-            file.write(data);
-            result = !data.isEmpty();
-        }
-        return result;
-    }
-protected:
-    virtual bool isValidFormat() const noexcept = 0;
-    virtual Levels parseLevels(const QByteArray& data) const noexcept = 0;
-    virtual QByteArray serrializeLevels(const Levels& levels) noexcept = 0;
-    QString m_filePath;
-    QByteArray m_data;
-};
-
-class LevelsFromXml: public AFileLevelsIO
+class LevelsFromXml: public ILevelsIO
 {
 public:
     LevelsFromXml(const QString& target = {}) noexcept;
-private:
-    bool isValidFormat() const noexcept override;
-    Levels parseLevels(const QByteArray& data) const noexcept override;
-    QByteArray serrializeLevels(const Levels &levels) noexcept override;
+    bool isValid(const DataType& data) noexcept override;
+    Levels parse(const DataType &data) noexcept override;
+    DataType serrialize(const Levels &levels) noexcept override;
 };

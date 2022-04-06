@@ -77,7 +77,7 @@ bool LevelsModel::saveToFile(const QString &path)
     LevelsFromXml parser;
     auto success = parser.setTarget(path);
     if ( success == true ){
-        pars
+        parser.ser
     }
     return success;
 }

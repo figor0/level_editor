@@ -19,7 +19,7 @@ public:
 		Row,
 		Column
 	};
-	LevelModel(std::shared_ptr<ItemsArea> items_ptr,
+    LevelModel(std::shared_ptr<Level> items_ptr,
 			   std::shared_ptr<TypesContainer> types_ptr,
 			   QObject* parent = nullptr);
 	QHash<int, QByteArray> roleNames() const override;
@@ -41,7 +41,7 @@ private:
 	static constexpr int height = 15;
 	static constexpr int size = width * height;
 	QString m_image_path;
-	std::shared_ptr<ItemsArea> m_items_ptr;
+    std::shared_ptr<Level> m_items_ptr;
 	std::shared_ptr<TypesContainer> m_types_ptr;
 	int m_requester_row, m_requester_column;
 	QString m_requester_type;

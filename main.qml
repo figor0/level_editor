@@ -12,7 +12,7 @@ ApplicationWindow {
     property int native_height: 960
     width: native_width
     height: native_height
-       LoaderSaver{
+    LoaderSaver{
         id: loader_saver
     }
     Header{
@@ -24,6 +24,7 @@ ApplicationWindow {
     }
     LevelArea{
         id: level_area
+        levelModel: level_model
         anchors{
             top: header.bottom
             left: parent.left
@@ -63,7 +64,6 @@ ApplicationWindow {
             } else{
                 types_window.visible = true
             }
-
         }
     }
     Rectangle{

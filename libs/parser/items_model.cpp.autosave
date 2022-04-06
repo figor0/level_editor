@@ -138,6 +138,20 @@ void Level::setName(const QString &name)
     m_name = name;
 }
 
+bool Level::operator==(const Level &other)
+{
+    return m_width == other.m_width &&
+            m_height == other.m_height &&
+            m_src_path == other.m_src_path &&
+            m_items == other.m_items &&
+            m_name == other.m_name;
+    
+}
+
+bool Level::operator!=(const Level &other){
+    return !(*this == other);
+}
+
 QString Level::getSrc_path() const
 {
     return m_src_path;
@@ -145,12 +159,12 @@ QString Level::getSrc_path() const
 
 bool Level::load(const QDomDocument &doc)
 {
-	bool success_flag = false;
-	auto root_elem = doc.firstChildElement();
-	if (root_elem.isNull() == false){
+    bool success_flag = false;
+    auto root_elem = doc.firstChildElement();
+    if (root_elem.isNull() == false){
         success_flag = load(root_elem);
-	}
-	return success_flag;
+    }
+    return success_flag;
 
 }
 
@@ -256,3 +270,55 @@ bool LevelItem::isValid() const
 	return m_item.type_name().isEmpty() == false;
 }
 
+
+bool operator==(const Level &left, const Level &right)
+{
+}
+
+LevelsFromXml::LevelsFromXml(const QString &target) noexcept
+    : AFileLevelsIO(target)
+{}
+
+bool LevelsFromXml::isValidFormat() const noexcept override
+{
+    bool result = false;
+    try {
+        parseLevels(AFileLevelsIO::m_data);
+    } catch ( ... ) {}
+    return result;
+}
+
+Levels LevelsFromXml::parseLevels(const QByteArray &data) const noexcept override
+{
+    Levels result;
+    QDomDocument doc(data);
+    
+    auto dom_list = doc.elementsByTagName("root");
+    
+    int size = dom_list.size();
+    result.reserve(size);
+    for( int i = 0;
+         i < size;
+         ++i)
+    {
+        Level level;
+        if ( level.load(dom_list.at(i).toElement()) ) {
+            result.push_back(level);
+        }
+    }
+    return result;
+}
+
+QByteArray LevelsFromXml::serrializeLevels(const Levels &levels) noexcept override
+{
+    QDomDocument doc;
+    auto root_elem = doc.createElement("root");
+    for (const auto& level: levels)
+    {
+        auto element = level.toElement();
+        element.setTagName(level.getName());
+        root_elem.appendChild(level.toElement());
+    }
+    doc.appendChild(root_elem);
+    return doc.toByteArray();
+}

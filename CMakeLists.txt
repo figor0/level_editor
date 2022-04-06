@@ -16,11 +16,13 @@ set(HEADERS
     LevelModel.h
     InputModel.h
     TypesModel.h
+    LevelsModel.h
 )
 set(SOURCES
     LevelModel.cpp
     InputModel.cpp
     TypesModel.cpp
+    LevelsModel.cpp
 )
 
 add_subdirectory(libs/parser)

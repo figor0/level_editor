@@ -6,5 +6,7 @@
         <file>DetailArea.qml</file>
         <file>Header.qml</file>
         <file>LoaderSaver.qml</file>
+        <file>LevelsEditor.qml</file>
+        <file>TypesTable.qml</file>
     </qresource>
 </RCC>

@@ -11,7 +11,7 @@ QHash<int, QByteArray> LevelModel::roleNames() const {
 	};
 }
 
-LevelModel::LevelModel(std::shared_ptr<ItemsArea> items_ptr,
+LevelModel::LevelModel(std::shared_ptr<Level> items_ptr,
 					   std::shared_ptr<TypesContainer> types_ptr,
 					   QObject* parent): QAbstractTableModel(parent),
 	m_items_ptr(items_ptr), m_types_ptr(types_ptr)

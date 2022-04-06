@@ -13,6 +13,7 @@ QHash<int, QByteArray> InputModel::roleNames() const{
 
 int InputModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
 	return m_fields.size();
 }
 

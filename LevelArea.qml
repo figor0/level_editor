@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick 2.0
 import QtQuick 2.12
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.12
@@ -13,13 +12,13 @@ Item {
     property int cellwidth: width/25
     property bool greed_visibility: true
     property bool changeState: false
+    property alias levelModel: level_view.model
     TableView{
         id: level_view
         interactive: false
         anchors.fill: parent
         rowSpacing: 0
         columnSpacing: 0
-        model: level_model
         delegate: Rectangle{
             id: cell
             border.color: "black"

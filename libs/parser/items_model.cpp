@@ -46,11 +46,14 @@ Level::Level(const Level &level):
 
 Level &Level::operator=(const Level &level)
 {
-    m_width = level.m_width;
-    m_height = level.m_height;
-    m_src_path = level.m_src_path;
-    m_items = level.m_items;
-    m_name = level.m_name;
+    if ( *this != level) {
+        m_width = level.m_width;
+        m_height = level.m_height;
+        m_src_path = level.m_src_path;
+        m_items = level.m_items;
+        m_name = level.m_name;
+    }
+    return *this;
 }
 
 bool Level::load(const QString &level_path)
@@ -136,6 +139,20 @@ QString Level::getName() const
 void Level::setName(const QString &name)
 {
     m_name = name;
+}
+
+bool Level::operator==(const Level &other)
+{
+    return m_width == other.m_width &&
+           m_height == other.m_height &&
+           m_src_path == other.m_src_path &&
+           m_items == other.m_items &&
+           m_name == other.m_name;
+}
+
+bool Level::operator!=(const Level &other)
+{
+    return !( *this == other );
 }
 
 QString Level::getSrc_path() const
@@ -257,73 +274,10 @@ bool LevelItem::isValid() const
 }
 
 
-//Levels ILevelsIO::parse(const ILevelsIO::TargetType &target) noexcept
-//{
-//    Levels result;
-//    bool valid = setTarget(target);
-//    if ( valid == true ) {
-//        result = parse();
-//    }
-//    return result;
-//}
+LevelsFromXml::LevelsFromXml() noexcept
+{
 
-//bool ILevelsIO::serrialize(const ILevelsIO::TargetType &target, const Levels &levels) noexcept
-//{
-//    bool success = setTarget(target);
-//    if ( success == true ){
-//        success = serrialize(levels);
-//    }
-//    return success;
-//}
-
-//AFileLevelsIO::AFileLevelsIO(const QString &target) noexcept
-//{
-//    setTarget(target);
-//}
-
-//bool AFileLevelsIO::isValid() const noexcept override
-//{
-//    return QFile::exists(m_filePath) &&
-//            isValidFormat();
-//}
-
-//bool AFileLevelsIO::setTarget(const QString &target) noexcept override
-//{
-//    m_filePath = target;
-//    if ( !isValid() ){
-//        m_filePath = QString();
-//        return false;
-//    }
-//    return true;
-//}
-
-//QString AFileLevelsIO::target() const noexcept override
-//{
-//    return m_filePath;
-//}
-
-//Levels AFileLevelsIO::parse() noexcept override
-//{
-//    QFile file(m_filePath);
-//    Levels result;
-//    if ( file.open( QIODevice::ReadOnly ) )
-//    {
-//        result = parseLevels(file.readAll());
-//    }
-//    return result;
-//}
-
-//bool AFileLevelsIO::serrialize(const Levels &levels) noexcept override
-//{
-//    bool result = false;
-//    QFile file(m_filePath);
-//    if ( file.open(QIODevice::WriteOnly)){
-//        auto data = serrializeLevels(levels);
-//        file.write(data);
-//        result = !data.isEmpty();
-//    }
-//    return result;
-//}
+}
 
 bool LevelsFromXml::isValid(const ILevelsIO::DataType &data) noexcept
 {
@@ -336,11 +290,52 @@ Levels LevelsFromXml::parse(const ILevelsIO::DataType &data) noexcept
     if ( isValid(data) ){
         QDomDocument root(data);
         auto root_elem = root.firstChildElement();
+        auto current_elem = root_elem.firstChildElement();
+        while( current_elem.isNull() != false )
+        {
+            Level level;
+            level.setName(current_elem.tagName());
+            level.load(current_elem);
+            result.push_back(level);
+        }
     }
     return result;
 }
 
+QDomElement toElement(const Level& level)
+{
+    auto level_items_data = level.toElement();
+    auto name = level.getName();
+
+    QDomElement currentLevel;
+    currentLevel.setTagName(name);
+    currentLevel.appendChild(level_items_data);
+
+    return level_items_data;
+}
+
 ILevelsIO::DataType LevelsFromXml::serrialize(const Levels &levels) noexcept
 {
+    QDomElement root;
+    root.setTagName("root");
+    for(const auto& level: levels){
+        root.appendChild(toElement(level));
+    }
+    QDomDocument doc;
+    doc.appendChild(root);
 
+    return doc.toByteArray();
+}
+
+ILevelsIO::DataType LevelsFromXml::serrialize(const LevelPtrs &levels) noexcept
+{
+    QDomElement root;
+    root.setTagName("root");
+    for(const auto& level: levels){
+        root.appendChild(toElement(*level));
+    }
+    QDomDocument doc;
+    doc.appendChild(root);
+
+    return doc.toByteArray();
 }

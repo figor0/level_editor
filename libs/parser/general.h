@@ -25,6 +25,8 @@ public:
 	QDomElement toElement();
 	QString type_name() const;
 	std::list<std::pair<QString, QString>> members() const;
+    bool operator==(const Item& other) const noexcept;
+    bool operator!=(const Item& other) const noexcept;
 private:
 	friend class ItemType;
 	QString m_type_name;

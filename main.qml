@@ -22,16 +22,17 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
     }
-    LevelArea{
-        id: level_area
-        levelModel: level_model
+    LevelsEditor{
+        id: levels_editor
+        model: levels_model
         anchors{
             top: header.bottom
             left: parent.left
+            right: parent.right
+            bottom: parent.bottom
         }
-        width: native_width
-        height: native_height*19/20
     }
+
     ApplicationWindow {
         id: types_window
         title: qsTr("Доступные типы")

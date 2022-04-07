@@ -14,8 +14,16 @@ QHash<int, QByteArray> LevelModel::roleNames() const {
 LevelModel::LevelModel(std::shared_ptr<Level> items_ptr,
 					   std::shared_ptr<TypesContainer> types_ptr,
 					   QObject* parent): QAbstractTableModel(parent),
-	m_items_ptr(items_ptr), m_types_ptr(types_ptr)
+    m_items_ptr(items_ptr), m_types_ptr(types_ptr)
 {}
+
+LevelModel::LevelModel(const LevelModel &other)
+    : QAbstractTableModel(nullptr),
+      m_items_ptr(other.m_items_ptr),
+      m_types_ptr(other.m_types_ptr)
+{
+
+}
 
 int LevelModel::rowCount(const QModelIndex &parent) const
 {
@@ -139,9 +147,14 @@ bool LevelModel::response(const QString &data)
 	return success;
 }
 
+std::shared_ptr<Level> LevelModel::items_ptr() const
+{
+    return m_items_ptr;
+}
+
 void LevelModel::create(){
-	m_items_ptr->create();
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
+    m_items_ptr->create();
+    emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
 }
 
 bool TypesContainer::parseFromFile(const QString &file_path)

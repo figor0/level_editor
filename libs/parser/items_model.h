@@ -67,7 +67,7 @@ private:
 bool operator==(const Level& left, const Level& right);
 
 using Levels = std::vector<Level>;
-
+using LevelPtrs = std::vector<std::shared_ptr<Level>>;
 class ILevelsIO
 {
 public:
@@ -75,13 +75,15 @@ public:
     virtual bool isValid(const DataType& data) noexcept = 0;
     virtual Levels parse(const DataType& target) noexcept = 0;
     virtual DataType serrialize(const Levels& levels) noexcept = 0;
+    virtual DataType serrialize(const LevelPtrs& levels) noexcept = 0;
 };
 
 class LevelsFromXml: public ILevelsIO
 {
 public:
-    LevelsFromXml(const QString& target = {}) noexcept;
+    LevelsFromXml() noexcept;
     bool isValid(const DataType& data) noexcept override;
     Levels parse(const DataType &data) noexcept override;
     DataType serrialize(const Levels &levels) noexcept override;
+    DataType serrialize(const LevelPtrs& levels) noexcept override;
 };

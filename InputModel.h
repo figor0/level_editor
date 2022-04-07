@@ -28,3 +28,4 @@ public:
 private:
 	std::vector<std::pair<QString, QString>> m_fields;
 };
+

@@ -6,18 +6,18 @@ import QtQuick.Dialogs 1.3
 
 
 Item {
-    GridView{
+    TableView {
         id: types_view
         anchors.fill: parent
         anchors.margins: 10
         model:	types_model
-        cellHeight: 150
-        cellWidth: 150
+//        cellHeight: 150
+//        cellWidth: 150
         delegate: Rectangle{
             id: type_cell
             color: (model.unique === true || model.amount === 0) ? "yellow" : "grey"
-            implicitHeight: 140
-            implicitWidth: 140
+            implicitHeight: 50
+            implicitWidth: 50
             Label{
                 id: type_name
                 anchors.top: parent.top
@@ -42,7 +42,7 @@ Item {
                 onClicked: {
                     if (model.unique === false || model.amount === 0){
                         types_window.visible = false
-                        level_model.setDstType(model.type_name)
+//                        level_model.setDstType(model.type_name)
                         field_model.setFieldTypes(model.type_fields)
                         detail_area.setting_type_label.text = model.type_name
                         detail_area.big_type_image.source = model.image_path

@@ -17,12 +17,12 @@ QHash<int, QByteArray> TypesModel::roleNames() const
 
 int TypesModel::rowCount(const QModelIndex &parent) const
 {
-	return m_types_ptr->types_list.size();
+    return 1;
 }
 
 int TypesModel::columnCount(const QModelIndex &parent) const
 {
-	return 1;
+    return m_types_ptr->types_list.size();
 }
 
 QVariant TypesModel::data(const QModelIndex &index, int role) const
@@ -30,7 +30,7 @@ QVariant TypesModel::data(const QModelIndex &index, int role) const
 	QVariant result;
 	if (index.isValid() == true){
 		auto need_it = m_types_ptr->types_list.begin();
-		std::advance(need_it, index.row());
+        std::advance(need_it, index.column());
 		switch (role) {
 		case Roles::ImagePath:
 		{

@@ -19,6 +19,11 @@ Item {
         anchors.fill: parent
         rowSpacing: 0
         columnSpacing: 0
+        onModelChanged: {
+            print("model changed")
+            model = levelModel
+        }
+
         delegate: Rectangle{
             id: cell
             border.color: "black"
@@ -50,8 +55,8 @@ Item {
                         onTriggered: {
                             changeState = true
                             blocker.visible = true
-                            level_model.setDstType(model.type_name)
-                            level_model.setDst(index)
+                            model.setDstType(model.type_name)
+                            model.setDst(index)
                             field_model.setField(model.data_types,
                                                  model.data_members)
                             detail_area.setting_type_label.text = model.type_name
@@ -66,7 +71,7 @@ Item {
                         onTriggered: {
                             blocker.visible = true
                             types_window.visible = true
-                            level_model.setDst(index)
+                            model.setDst(index)
                         }
                     }
                     MenuItem {
@@ -74,7 +79,7 @@ Item {
                         visible: contextMenu.empty
                         height: contextMenu.empty === true ? implicitHeight : 0
                         onTriggered: {
-                            level_model.clear(index)
+                            model.clear(index)
                         }
                     }
                 }

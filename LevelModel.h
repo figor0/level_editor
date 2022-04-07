@@ -19,9 +19,11 @@ public:
 		Row,
 		Column
 	};
+    LevelModel() = default;
     LevelModel(std::shared_ptr<Level> items_ptr,
 			   std::shared_ptr<TypesContainer> types_ptr,
 			   QObject* parent = nullptr);
+    LevelModel(const LevelModel& other);
 	QHash<int, QByteArray> roleNames() const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -36,9 +38,11 @@ public:
 	Q_INVOKABLE void setDst(const int index);
 	Q_INVOKABLE void setDstType(const QString& type);
 	Q_INVOKABLE bool response(const QString& data);
+    std::shared_ptr<Level> items_ptr() const;
+
 private:
-	static constexpr int width = 30;
-	static constexpr int height = 15;
+    static constexpr int width = 30;
+    static constexpr int height = 15;
 	static constexpr int size = width * height;
 	QString m_image_path;
     std::shared_ptr<Level> m_items_ptr;
@@ -46,3 +50,5 @@ private:
 	int m_requester_row, m_requester_column;
 	QString m_requester_type;
 };
+
+Q_DECLARE_METATYPE(LevelModel)

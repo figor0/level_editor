@@ -49,7 +49,18 @@ QString Item::type_name() const
 
 std::list<std::pair<QString, QString>> Item::members() const
 {
-	return m_members;
+    return m_members;
+}
+
+bool Item::operator==(const Item &other) const noexcept
+{
+    return m_type_name == other.m_type_name &&
+           m_members == other.members();
+}
+
+bool Item::operator!=(const Item &other) const noexcept
+{
+    return !(*this == other);
 }
 
 QDomDocument prepareXml(const QString &root_tag,

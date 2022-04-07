@@ -23,16 +23,13 @@ struct Containers{
 
 struct Models{
 	Models(const Containers& containers):
-		level_model(containers.area_ptr, containers.types_ptr),
 		types_model(containers.types_ptr),
-		input_model()
+        levels_model(containers.types_ptr)
 	{}
-	LevelModel level_model;
 	TypesModel types_model;
 	InputModel input_model;
     LevelsModel levels_model;
     void registration(QQmlContext* context) {
-		context->setContextProperty("level_model", &level_model);
 		context->setContextProperty("types_model", &types_model);
 		context->setContextProperty("field_model", &input_model);
         context->setContextProperty("levels_model", &levels_model);
@@ -41,6 +38,9 @@ struct Models{
 
 int main(int argc, char *argv[])
 {
+
+    qRegisterMetaType<LevelModel>("LevelModel");
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 	QGuiApplication app(argc, argv);
